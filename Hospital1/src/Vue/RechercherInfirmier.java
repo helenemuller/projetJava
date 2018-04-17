@@ -65,40 +65,30 @@ public class RechercherInfirmier extends JFrame implements ActionListener{
        this.setSize(300, 210);
        this.setVisible(true);
     }
-    
-    public void actionPerformed(ActionEvent e)
-    {
-        // si le bouton a été cliqué
-        if (e.getSource() == bouton)
-        {
-            System.out.println("ok");
-        }
-    }
 
     // faire un sous-programme qui push l'entrée clavier dans le jtextfield dans une requête
     
     
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // si le bouton a été cliqué
+        if (e.getSource() == bouton)
+        {
+            System.out.println("ok");
+        }
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public class RadioListener implements ActionListener {
-    
-     public void actionPerformed(ActionEvent e) {
-        
-        System.out.println("ActionEvent received: ");
-        if (e.getSource() == rotation1) {
-    	    System.out.println(rotation1 + " pressed.");
-        } else {
-    	    System.out.println(rotation2 + " pressed.");
+        @Override
+        public void actionPerformed(java.awt.event.ActionEvent ae) {
+            System.out.println("ActionEvent received: ");
+           if (ae.getSource() == rotation1) {
+               System.out.println(rotation1 + " pressed.");
+           } else {
+               System.out.println(rotation2 + " pressed.");
+           }
+           // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
-
-        @Override
-        public void actionPerformed(java.awt.event.ActionEvent e) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-   
-}
 }

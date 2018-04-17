@@ -89,20 +89,15 @@ public class RechercherDocteur extends JFrame implements ActionListener {
        this.setVisible(true);
     }
     
-    public void actionPerformed(ActionEvent e)
-    {
+    // faire un sous-programme qui push l'entrée clavier dans le jtextfield dans une requête
+
+    @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) {
         // si le bouton a été cliqué
         if (e.getSource() == bouton)
         {
             System.out.println("ok");
         }
-    }
-    
-    // faire un sous-programme qui push l'entrée clavier dans le jtextfield dans une requête
-
-    @Override
-    public void actionPerformed(java.awt.event.ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }   
 }
