@@ -7,16 +7,13 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javafx.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import Modèle.*;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,104 +24,115 @@ import java.util.logging.Logger;
  *
  * @author Vivien
  */
-public class Acceuil extends JFrame{
-    JPanel pan;
-    JPanel panbut;
-    JPanel rechpan;
-    JPanel majpan;
-    JPanel reppan;
-    JPanel container;
-    JButton rechbut;
-    JButton majbut;
-    JButton repbut;
-    CardLayout cl;
-    String[] listContent = {"Rep", "Maj", "Rech"};
-    JLabel majtitre;
-    JLabel reptitre;
-    JLabel rechtitre;
-    Connexion conn;
-    
-    public Acceuil(){
-        this.setTitle ("Menu");
-        this.setSize (2600, 1700);
-        pan = new JPanel();
-        panbut = new JPanel();
-        panbut.setPreferredSize(new Dimension(1500,300));
-        Font police= new Font("Tahoma", Font.BOLD, 30);
-        container = new JPanel();
-        reptitre = new JLabel();
-        rechtitre = new JLabel();
-        majtitre = new JLabel();
-        try {
-            conn = new Connexion("hopital","root","");
-        } catch (SQLException ex) {
-            Logger.getLogger(Acceuil.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Acceuil.class.getName()).log(Level.SEVERE, null, ex);
+public class Acceuil extends JFrame implements ActionListener {
+private JMenuBar menuBar;
+private JMenu menu, submenu,autre,resulting;
+private JMenuItem menuItem,menuItem2,menuItem3,menuItem4,submenu2,graphes,quitter,services;
+private JRadioButtonMenuItem rbMenuItem;
+private JCheckBoxMenuItem cbMenuItem;
+private JFrame frame;
+private ImageIcon image;
+private JLabel lab;
+
+public Acceuil()
+{
+//Create the menu bar
+menuBar = new JMenuBar();
+image = new ImageIcon("hopital.jpg");
+lab = new JLabel(image);
+
+frame = new JFrame();
+frame.add(lab);
+frame.setSize(image.getIconWidth(),image.getIconHeight());
+
+//Build the first menu
+menu = new JMenu("Rechercher");
+menu.setMnemonic(KeyEvent.VK_A);
+menu.getAccessibleContext().setAccessibleDescription(
+        "The only menu in this program that has menu items");
+menuBar.add(menu);
+
+//a submenu
+menu.addSeparator();
+submenu = new JMenu("Employés");
+
+menuItem = new JMenuItem("Docteurs");
+submenu.add(menuItem);
+menuItem.addActionListener(this);
+
+menuItem2 = new JMenuItem("Infirmiers");
+submenu.add(menuItem2);
+menuItem2.addActionListener(this);
+
+submenu2 = new JMenuItem("Malades");
+
+services = new JMenuItem("Services");
+services.addActionListener(this);
+
+menu.add(submenu);
+menu.add(submenu2);
+menu.add(services);
+submenu2.addActionListener(this);
+
+//Build second menu in the menu bar.
+menu = new JMenu("Mettre à jour");
+menuItem3 = new JMenuItem("Ajouter");
+menu.add(menuItem3);
+menuItem4 = new JMenuItem("Supprimer");
+menu.add(menuItem4);
+menuBar.add(menu);
+
+resulting = new JMenu("Statistiques");
+graphes = new JMenuItem("Graphes");
+resulting.add(graphes);
+menuBar.add(resulting);
+
+autre = new JMenu("Autre");
+quitter = new JMenuItem("Quitter");
+autre.add(quitter);
+menuBar.add(autre);
+quitter.addActionListener(this);
+
+frame.setJMenuBar(menuBar);
+
+frame.setVisible(true);
+
+}
+
+public static void main (String args[])
+    {
+        new Acceuil();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == quitter)
+        {
+            System.exit(0);
+        }
+        if (e.getSource() == submenu2)
+        {
+            System.out.println("okkkk");
+            new RechercherMalade();
+        }
+        if (e.getSource() == menuItem)
+        {
+            System.out.println("okkkk docteurs");
+            new RechercherDocteur();
+        }
+        if (e.getSource() == menuItem2)
+        {
+            System.out.println("okkkk infirmiers");
+            new RechercherInfirmier();
+        }
+        if (e.getSource() == services)
+        {
+            System.out.println("Services okkkk");
         }
         
-        rechpan = new JPanel();
-        rechpan.setBackground(Color.yellow);
-        majpan = new JPanel();
-        majpan.setBackground(Color.red);
-        reppan = new JPanel();
-        reppan.setBackground(Color.blue);
-        
-        rechbut = new JButton();
-        majbut = new JButton();
-        repbut = new JButton();
-        rechtitre.setFont(police);
-        rechtitre.setText("Recherche");
-        rechbut.add(rechtitre);
-        majtitre.setFont(police);
-        majtitre.setText("Mise à jour");
-        majbut.add(majtitre);
-        reptitre.setFont(police);
-        reptitre.setText("Reporting");
-        repbut.add(reptitre);
-        
-        
-        cl = new CardLayout();
-        pan.setLayout(cl);
-        panbut.setLayout(new GridLayout(1,3));
-        panbut.add(rechbut);
-        panbut.add(majbut);
-        panbut.add(repbut);
-        
-        pan.add(reppan, listContent[0]);
-        pan.add(majpan, listContent[1]);
-        pan.add(rechpan, listContent[2]);
-        
-        rechbut.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                cl.show(pan, listContent[0]);
-            }
-        });
-        majbut.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                 cl.show(pan, listContent[1]);
-            }
-        });
-        repbut.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent ae) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                cl.show(pan, listContent[2]);
-            }
-        });
-        container.setLayout(new BorderLayout());
-        container.add(panbut,BorderLayout.NORTH);
-        container.add(pan,BorderLayout.CENTER); // ajouter le panneau dans la fenêtre
-        this.setLocationRelativeTo(null);
-        this.setContentPane(container);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setVisible(true);
     }
-}
+    }
+    
+    
+    
+
