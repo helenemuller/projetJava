@@ -38,6 +38,8 @@ public class Connexion {
      * ArrayList public pour les requêtes de MAJ
      */
     public ArrayList<String> requetesMaj = new ArrayList<>();
+    
+    public String[][] reponses;
 
     /**
      * Constructeur avec 3 paramètres : nom, login et password de la BDD locale
@@ -199,7 +201,46 @@ public class Connexion {
         // Retourner l'ArrayList
         return liste;
     }
+    
+    /**
+     * Methode qui retourne l'ArrayList des champs de la requete en parametre
+     * @param requete
+     * @return 
+     * @throws java.sql.SQLException
+     */
+    public ArrayList<ArrayList<String>> ChampsRequete(String requete) throws SQLException {
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery(requete);
 
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+
+        // creation d'une ArrayList de String
+        ArrayList<ArrayList <String>> liste;
+        liste = new ArrayList<>();
+        ArrayList<String> list2;
+        list2=new ArrayList<>();
+        
+        // tant qu'il reste une ligne 
+        while (rset.next()) {
+
+            // Concatener les champs de la ligne separes par ,
+            for (int i = 1; i <= nbColonne; i++) {
+                list2.add(rset.getString(i));
+                //System.out.println(list2.get(i-1));
+            }
+
+            // ajouter les champs de la ligne dans l'ArrayList
+            liste.add(list2);
+            list2.clear();
+        }
+        // Retourner le ArrayList
+        return liste;
+    }
+    
     /**
      * Méthode qui execute une requete de MAJ en parametre
      * @param requeteMaj

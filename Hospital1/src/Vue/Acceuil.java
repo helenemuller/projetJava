@@ -46,7 +46,9 @@ public class Acceuil extends JFrame{
     
     public Acceuil(){
         this.setTitle ("Menu");
-        this.setSize (2600, 1700);
+        this.setSize (500, 300);
+        this.setAlwaysOnTop(true);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         pan = new JPanel();
         panbut = new JPanel();
         panbut.setPreferredSize(new Dimension(1500,300));
@@ -55,16 +57,19 @@ public class Acceuil extends JFrame{
         reptitre = new JLabel();
         rechtitre = new JLabel();
         majtitre = new JLabel();
-        try {
+        
+        /*try {
             conn = new Connexion("hopital","root","");
         } catch (SQLException ex) {
             Logger.getLogger(Acceuil.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Acceuil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
+        Recherche rech= new Recherche();
         rechpan = new JPanel();
-        rechpan.setBackground(Color.yellow);
+        //rechpan.setBackground(Color.yellow);
+        rechpan.add(rech.getPane());
         majpan = new JPanel();
         majpan.setBackground(Color.red);
         reppan = new JPanel();
@@ -100,7 +105,7 @@ public class Acceuil extends JFrame{
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                cl.show(pan, listContent[0]);
+                cl.show(pan, listContent[2]);
             }
         });
         majbut.addActionListener(new ActionListener(){
@@ -116,7 +121,7 @@ public class Acceuil extends JFrame{
             @Override
             public void actionPerformed(java.awt.event.ActionEvent ae) {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                cl.show(pan, listContent[2]);
+                cl.show(pan, listContent[0]);
             }
         });
         container.setLayout(new BorderLayout());
