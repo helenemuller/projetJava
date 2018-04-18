@@ -216,10 +216,10 @@ public class Connexion {
         
         liste.add(String.valueOf(nbColonne));
         
-        /*for(int i=1; i<=nbColonne; i++){
+        for(int i=1; i<=nbColonne; i++){
             System.out.println(rsetMeta.getColumnName(i));
             liste.add(rsetMeta.getColumnName(i));
-        }*/
+        }
         
         
         // tant qu'il reste une ligne 

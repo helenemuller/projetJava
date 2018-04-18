@@ -73,22 +73,41 @@ public class ResultDocteur extends JFrame{
                 }*/
 
                 JTable tablo;
-                tablo = conn.remplirChampsTable2("SELECT no_docteur, COUNT(no_malade) FROM soigne GROUP BY no_docteur HAVING COUNT(no_malade) = " + nbmalade);
-                container.add(new JScrollPane(tablo), BorderLayout.CENTER);
+                tablo = conn.remplirChampsTable2("SELECT nom, prenom, COUNT(no_malade) FROM soigne INNER JOIN employe ON soigne.no_docteur = employe.numero GROUP BY no_docteur HAVING COUNT(no_malade) = " + nbmalade);
+                if(tablo.getRowCount()!=0)
+                    container.add(new JScrollPane(tablo), BorderLayout.CENTER);
+                else
+                {
+                    container.add(new JLabel(""), BorderLayout.CENTER);
+                }
             }
             if(nbmalade.equals("")){
                 JLabel entete = new JLabel();
                 ArrayList<String> iddoc = conn.remplirChampsRequete("SELECT nom,prenom,adresse,tel FROM employe WHERE numero = " + num);
-                entete.setText("Identité du médecin: " + iddoc.get(0));
-                container.add(entete, BorderLayout.NORTH);
-                
-                JTable tablo = conn.remplirChampsTable2("SELECT * FROM soigne WHERE no_docteur = " + num);
-                container.add(new JScrollPane(tablo), BorderLayout.CENTER);
-                
                 JLabel pied = new JLabel();
                 ArrayList<String> spedoc = conn.remplirChampsRequete("SELECT specialite FROM docteur WHERE numero = " + num);
-                pied.setText("Le docteur "+num+" possède \""+spedoc.get(0)+"\" comme spécialité.");
-                container.add(pied, BorderLayout.SOUTH);
+                
+                if(!iddoc.isEmpty()){
+                    if(!spedoc.isEmpty()){
+                        entete.setText("Identité du médecin: " + iddoc.get(0));
+                        container.add(entete, BorderLayout.NORTH);
+
+                        JTable tablo = conn.remplirChampsTable2("SELECT * FROM soigne WHERE no_docteur = " + num);
+                        container.add(new JScrollPane(tablo), BorderLayout.CENTER);
+
+                        pied.setText("Le docteur "+num+" possède \""+spedoc.get(0)+"\" comme spécialité.");
+                        container.add(pied, BorderLayout.SOUTH);
+                    }
+                    else{
+                        entete.setText("Aucun docteur ne correspond à ce numéro.");
+                        //ArrayList<String> idinf = conn.remplirChampsRequete("SELECT nom,prenom,adresse,tel FROM employe WHERE numero = " + num);
+                        pied.setText("Mais un infirmier correspond: " + iddoc.get(0));
+                    }
+                }
+                else{
+                    entete.setText("Aucun employé ne correspond à ce numéro.");
+                    ArrayList<String> idmal = conn.remplirChampsRequete("SELECT nom,prenom,adresse,tel FROM employe WHERE numero = " + num);
+                }
             }
             if(!nbmalade.equals("") && !num.equals(""))
             {
@@ -101,7 +120,7 @@ public class ResultDocteur extends JFrame{
                 pan.setLayout(new GridLayout(2,1));
                 JTable tabloS = conn.remplirChampsTable2("SELECT * FROM soigne WHERE no_docteur = " + num);
                 pan.add(tabloS);
-                JTable tabloI = conn.remplirChampsTable2("SELECT no_docteur, COUNT(no_malade) FROM soigne GROUP BY no_docteur HAVING COUNT(no_malade) = " + nbmalade);
+                JTable tabloI = conn.remplirChampsTable2("SELECT nom, prenom, COUNT(no_malade) FROM soigne INNER JOIN employe ON soigne.no_docteur = employe.numero GROUP BY no_docteur HAVING COUNT(no_malade) = " + nbmalade);
                 pan.add(tabloI);
                 container.add(pan,BorderLayout.CENTER);
                 
