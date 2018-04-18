@@ -165,7 +165,7 @@ public class ResultDocteur extends JFrame{
             }*/
             
             JTable tablo;
-            tablo =conn.remplirChampsTable2("SELECT * FROM docteur") ;
+            tablo =conn.remplirChampsTable2("SELECT nom,prenom,docteur.numero,specialite FROM docteur INNER JOIN employe ON docteur.numero = employe.numero") ;
             container.add(new JScrollPane(tablo), BorderLayout.CENTER);
         }
         
