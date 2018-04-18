@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -9,6 +9,7 @@ package Modèle;
  */
 import java.sql.*;
 import java.util.ArrayList;
+import javax.swing.JTable;
 
 /**
  * 
@@ -38,8 +39,6 @@ public class Connexion {
      * ArrayList public pour les requêtes de MAJ
      */
     public ArrayList<String> requetesMaj = new ArrayList<>();
-    
-    public String[][] reponses;
 
     /**
      * Constructeur avec 3 paramètres : nom, login et password de la BDD locale
@@ -202,13 +201,7 @@ public class Connexion {
         return liste;
     }
     
-    /**
-     * Methode qui retourne l'ArrayList des champs de la requete en parametre
-     * @param requete
-     * @return 
-     * @throws java.sql.SQLException
-     */
-    public ArrayList<ArrayList<String>> ChampsRequete(String requete) throws SQLException {
+    public ArrayList remplirChampsRequete2(String requete) throws SQLException {
         // récupération de l'ordre de la requete
         rset = stmt.executeQuery(requete);
 
@@ -217,30 +210,76 @@ public class Connexion {
 
         // calcul du nombre de colonnes du resultat
         int nbColonne = rsetMeta.getColumnCount();
-
         // creation d'une ArrayList de String
-        ArrayList<ArrayList <String>> liste;
-        liste = new ArrayList<>();
-        ArrayList<String> list2;
-        list2=new ArrayList<>();
+        ArrayList<String> liste;
+        liste = new ArrayList<String>();
+        
+        liste.add(String.valueOf(nbColonne));
+        
+        /*for(int i=1; i<=nbColonne; i++){
+            System.out.println(rsetMeta.getColumnName(i));
+            liste.add(rsetMeta.getColumnName(i));
+        }*/
+        
         
         // tant qu'il reste une ligne 
         while (rset.next()) {
-
-            // Concatener les champs de la ligne separes par ,
-            for (int i = 1; i <= nbColonne; i++) {
-                list2.add(rset.getString(i));
-                //System.out.println(list2.get(i-1));
-            }
-
-            // ajouter les champs de la ligne dans l'ArrayList
-            liste.add(list2);
-            list2.clear();
+            for(int i=1;i<=nbColonne;i++)
+                liste.add(rset.getString(i)); // ajouter les champs de la ligne dans l'ArrayList
         }
-        // Retourner le ArrayList
+        // Retourner l'ArrayList
         return liste;
     }
     
+    /**
+     * Methode qui retourne l'ArrayList des champs de la requete en parametre
+     * @param requete
+     * @return 
+     * @throws java.sql.SQLException
+     */
+    public JTable remplirChampsTable2(String requete) throws SQLException {
+        // récupération de l'ordre de la requete
+        rset = stmt.executeQuery(requete);
+
+        // récupération du résultat de l'ordre
+        rsetMeta = rset.getMetaData();
+
+        // calcul du nombre de colonnes du resultat
+        int nbColonne = rsetMeta.getColumnCount();
+        // creation d'une ArrayList de String
+        ArrayList<String> liste;
+        liste = new ArrayList<String>();
+        
+        String[] title = new String[nbColonne];
+        for(int i=1; i<=nbColonne; i++){
+            title[i-1]=rsetMeta.getColumnName(i);
+        }
+        
+        
+        // tant qu'il reste une ligne 
+        while (rset.next()) {
+            for(int i=1;i<=nbColonne;i++)
+                liste.add(rset.getString(i)); // ajouter les champs de la ligne dans l'ArrayList
+        }
+        
+        String[][] tab= new String[(liste.size()/nbColonne)][nbColonne];
+        int k=0;
+        for(int i=0; i<liste.size(); i+=nbColonne)
+        {
+            int l=0;
+            for(int j=i; j<(i+nbColonne);j++)
+            {
+                tab[k][l]=liste.get(j);
+                l++;
+            }
+            k++;
+        }
+        
+        JTable tablo = new JTable(tab, title);
+        // Retourner le JTable
+        return tablo;
+    }
+
     /**
      * Méthode qui execute une requete de MAJ en parametre
      * @param requeteMaj
