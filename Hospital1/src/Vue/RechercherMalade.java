@@ -83,6 +83,7 @@ public class RechercherMalade extends JFrame implements ActionListener {
                 gbc.insets = new Insets(10,50,5,50);
                 gbl.setConstraints(this.bouton, gbc);
                 this.add(this.bouton);
+                // ATTENTION CA NE MARCHE QUE POUR UNE FOIS
                 this.bouton.addActionListener(this);
 
        this.setResizable(false);
@@ -94,12 +95,30 @@ public class RechercherMalade extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        // si le bouton a été cliqué
+        // paramètres pour les requêtes ?
+        String mut,num;
+        // si le bouton a été cliqué ET que le champ de la mutuelle a été rempli
         if (e.getSource() == bouton)
         {
-            System.out.println("Champ mutuelle : ok");
+            if (entree1.getText() != "")
+            // test 
+            System.out.println("Champ mutuelle et bouton : ok");  
+            num = entree1.getText();
+            System.out.println("Mutuelle saisie : " + num);
+            // appeler la requête qui affiche tous les malades sous cette mutuelle
         }
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // si le bouton a été cliqué ET que le champ du numéro a été rempli
+        if (e.getSource() == bouton)
+        {
+            if (entree1.getText() != "")
+            // test 
+            System.out.println("Champ numéro et bouton : ok");  
+            mut = entree1.getText();
+            System.out.println("Numéro saisi : " + mut);
+            // appeler la requête qui affiche tous les médecins qui soigne le malade en question
+            
+            // dans cette même requête, les spécialités des médecins doivent être affichées
+        }
     }
     
 }

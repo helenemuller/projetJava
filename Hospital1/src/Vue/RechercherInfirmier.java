@@ -5,9 +5,12 @@
  */
 package Vue;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -19,6 +22,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -31,39 +35,39 @@ import javax.swing.event.ChangeEvent;
 public class RechercherInfirmier extends JFrame implements ActionListener{
     
     // Pour renseigner la rotation jour/nuit de l'infirmier recherché 
-
+    private JFrame fen;
+    private JPanel panRadio,panButton;
     private ButtonGroup group;
-    private JRadioButton rotation1,rotation2;
-    private JLabel name;
-    private JTextField entree1;
-    private JTextField entree2;
+    private JRadioButton rotation;
     private GridBagLayout gbl = new GridBagLayout();
     private JButton bouton;
     
     public RechercherInfirmier()
     {
+        fen = new JFrame();
+        fen.setSize(300,150);
+        panRadio = new JPanel();
+        panButton = new JPanel();
         group = new ButtonGroup();
-        name = new JLabel("Rotation : ");
-        rotation1 = new JRadioButton("Nuit",true);
-        rotation2 = new JRadioButton("Jour");
-        group.add(rotation1);
-        group.add(rotation2);
+        bouton = new JButton("Valider");
         
-        // un listener sur les items en appelant la classe
-        RadioListener listen = new RadioListener();
-        rotation1.addActionListener(listen);
-        rotation2.addActionListener(listen);
+        panRadio.add(rotation = new JRadioButton("Jour",true));
+        rotation.setActionCommand("Jour");
+        group.add(rotation);
         
+        panRadio.add(rotation = new JRadioButton("Nuit"));
+        rotation.setActionCommand("Nuit");
+        group.add(rotation);
         
-        this.setLayout(new FlowLayout());
-        this.add(rotation1);
-        this.add(rotation2);
+        panButton.add(bouton);
+        bouton.addActionListener(this);
         
-        //this.add(name);
-       
-       this.setResizable(false);
-       this.setSize(300, 210);
-       this.setVisible(true);
+        Container content = fen.getContentPane();
+        content.setLayout(new GridLayout(2,1));
+        content.add(panRadio);
+        content.add(panButton);
+
+       fen.setVisible(true);
     }
 
     // faire un sous-programme qui push l'entrée clavier dans le jtextfield dans une requête
@@ -71,24 +75,24 @@ public class RechercherInfirmier extends JFrame implements ActionListener{
     
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        // si le bouton a été cliqué
+        // rotation de nuit ou de jour ??
+        String rot = group.getSelection().getActionCommand();
+        System.out.println("Rotation de : " + rot);
+        // on veut appeler la bonne requête en fonction de la rotation
+        if (rot == "Jour")
+        {
+            System.out.println("Appeler les infirmiers de jour");
+        }
+        if (rot == "Nuit")
+        {
+            System.out.println("Appeler les infirmiers de nuit");
+        }
+        
+        // si le bouton valider a été cliqué
         if (e.getSource() == bouton)
         {
             System.out.println("ok");
         }
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public class RadioListener implements ActionListener {
-        @Override
-        public void actionPerformed(java.awt.event.ActionEvent ae) {
-            System.out.println("ActionEvent received: ");
-           if (ae.getSource() == rotation1) {
-               System.out.println(rotation1 + " pressed.");
-           } else {
-               System.out.println(rotation2 + " pressed.");
-           }
-           // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    }
+
 }

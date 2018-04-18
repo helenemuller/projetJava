@@ -23,13 +23,14 @@ import java.io.*;
  */
 public class RechercherDocteur extends JFrame implements ActionListener {
     
-     private JFrame fenetre;
+    private JFrame fenetre;
     private JLabel malades;
     private JLabel numero;
     private JTextField entree1;
     private JTextField entree2;
     private GridBagLayout gbl = new GridBagLayout();
     private JButton bouton;
+    private boolean exit;
     
     // cette classe nous permet d'afficher une fenêtre avec un champ de saisie du nb malades + numéro
     
@@ -40,6 +41,7 @@ public class RechercherDocteur extends JFrame implements ActionListener {
         entree1 = new JTextField();
         entree2 = new JTextField();
         bouton = new JButton("Valider");
+        exit = false;
         
                 this.setLayout(gbl);
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -89,14 +91,31 @@ public class RechercherDocteur extends JFrame implements ActionListener {
        this.setVisible(true);
     }
     
-    // faire un sous-programme qui push l'entrée clavier dans le jtextfield dans une requête
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
+        String nume,nb;
         // si le bouton a été cliqué
         if (e.getSource() == bouton)
         {
             System.out.println("ok");
+            // si le champ "numéro" n'est pas vide
+            if (entree1.getText() != "")
+            {
+                System.out.println("ok numéro");
+                nume = entree1.getText();
+                System.out.println("Numéro du docteur saisi : " + nume);
+                // requête supplémentaire : affichage des infos du docteur par son NUMERO
+            }
+            // si le champ "nb de malades" n'est pas vide
+            if (entree2.getText() != "")
+            {
+                System.out.println("okkk nb de malades");
+                nb = entree2.getText();
+                System.out.println("Nb de malades saisi : " + nb);
+                // si nb = 0 (aucun malade hospitalisé, afficher tous les docteurs concernés (nom + prénom)
+                // si nb >= 1, afficher tous les docteurs concernés (nom et prénom)
+            }
         }
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }   

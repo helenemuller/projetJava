@@ -128,6 +128,7 @@ public static void main (String args[])
         if (e.getSource() == services)
         {
             System.out.println("Services okkkk");
+            new RechercherService();
         }
         
     }
